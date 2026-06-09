@@ -2,16 +2,16 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-typedef struct NodeTag 
+typedef struct QueueNodeTag 
 {
-    int data;
-    struct NodeTag* next;
-} Node;
+    char data; 
+    struct QueueNodeTag* next; 
+} QueueNode;                   
 
 typedef struct QueueTag
 {
-    Node* head;
-    Node* tail;
+    QueueNode* head;           
+    QueueNode* tail;           
     int size;
 } Queue;
 
@@ -28,11 +28,10 @@ Queue* createQueue()
         queue->tail = NULL;
         queue->size = 0;
     }
-
     return queue;
 }
 
-void enqueue(Queue* queue, int num)
+void enqueue(Queue* queue, char num) 
 {
     if (queue == NULL)
     {
@@ -40,9 +39,11 @@ void enqueue(Queue* queue, int num)
     }
     else
     {
-        Node* node = (Node*)malloc(sizeof(Node));
+        QueueNode* node = (QueueNode*)malloc(sizeof(QueueNode)); 
         if (node == NULL)
+        {
             printf("\nQueue Overflow");
+        }
         else
         {
             node->data = num;
@@ -59,22 +60,21 @@ void enqueue(Queue* queue, int num)
                 queue->tail = node;
             }
             queue->size++;
-
-            printf("\nQueued %d onto the queue. Queue Size: %d", num, queue->size);
+            printf("\nQueued %c onto the queue. Queue Size: %d", num, queue->size);
         }
     }
 }
 
-int dequeue(Queue* queue)
+char dequeue(Queue* queue) 
 {
-    int resultValue = -9999;
+    char resultValue = '\0'; 
     if (queue == NULL || queue->size == 0)
     {
         printf("\nQueue Underflow");
     }
     else
     {
-        Node* temp = queue->head;
+        QueueNode* temp = queue->head; 
         resultValue = temp->data;
 
         queue->head = queue->head->next;
@@ -86,14 +86,14 @@ int dequeue(Queue* queue)
         }
         
         free(temp);
-        printf("\nDequeued %d from the queue. Queue Size: %d", resultValue, queue->size);
+        printf("\nDequeued %c from the queue. Queue Size: %d", resultValue, queue->size);
     }
     return resultValue;
 }
 
-int Head(Queue* queue)
+char Head(Queue* queue) 
 {
-    int resultValue = -9999;
+    char resultValue = '\0'; 
     if (queue == NULL || queue->size == 0)
     {
         printf("\nQueue is NULL");
@@ -102,42 +102,37 @@ int Head(Queue* queue)
     {
         resultValue = queue->head->data;
     }
-
     return resultValue;
 }
 
-int Tail(Queue* queue)
+char Tail(Queue* queue) 
 {
-    int resultValue = -9999;
+    char resultValue = '\0'; 
     if (queue == NULL || queue->size == 0)
     {
         printf("\nQueue is NULL");
     }
     else
     {
-        resultValue = queue->head->data;
+        resultValue = queue->tail->data; 
     }
-
     return resultValue;
 }
 
 bool isEmptyQueue(Queue* queue)
 {
     bool emptyStatus = false;
-    
     if (queue == NULL || queue->size == 0)
     {
         emptyStatus = true;
     }
-    
     return emptyStatus; 
 }
 
 bool isFullQueue(Queue* queue)
 {
     bool fullStatus = false;
-    Node* testNode = (Node*)malloc(sizeof(Node));
-    
+    QueueNode* testNode = (QueueNode*)malloc(sizeof(QueueNode)); 
     if (testNode == NULL) 
     {
         fullStatus = true;
@@ -146,21 +141,20 @@ bool isFullQueue(Queue* queue)
     {
         free(testNode);
     }
-    
     return fullStatus;
 }
 
 void deleteQueue(Queue** queue)
 {
     if (queue == NULL || *queue == NULL)
+    {
         printf("\nQueue is NULL");
-    
+    }
     else
     {
         Queue* temp = *queue;
-
-        Node* current = temp->head;
-        Node* next = NULL;
+        QueueNode* current = temp->head; 
+        QueueNode* next = NULL;          
 
         while(current != NULL)
         {
@@ -181,13 +175,12 @@ void printQueue(Queue* queue)
     }
     else
     {
-        Node* current = queue->head;
+        QueueNode* current = queue->head; 
         int count = 1;
         while (current != NULL)
         {
-            printf("\n%d | %d", count++, current->data);
+            printf("\n%d | %c", count++, current->data);
             current = current->next;
         }
     }
 }
-

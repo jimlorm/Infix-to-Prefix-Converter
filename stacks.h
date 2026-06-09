@@ -2,15 +2,15 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-typedef struct NodeTag 
+typedef struct StackNodeTag 
 {
-    int data;
-    struct NodeTag* next;
-} Node;
+    char data; 
+    struct StackNodeTag* next; 
+} StackNode;                   
 
 typedef struct StackTag
 {
-    Node* top;
+    StackNode* top;            
     int size;
 } Stack;
 
@@ -29,53 +29,55 @@ Stack* createStack()
     return stack;
 }
 
-void push(Stack* stack, int num)
+void push(Stack* stack, char num) 
 {
     if (stack == NULL)
+    {
         printf("\nStack is NULL");
-    
+    }
     else
     {
-        Node* node = (Node*)malloc(sizeof(Node));
+        StackNode* node = (StackNode*)malloc(sizeof(StackNode)); 
         if (node == NULL)
+        {
             printf("\nStack Overflow");
+        }
         else
         {
             node->data = num;
             node->next = stack->top;
             stack->top = node;
             stack->size++;
-
-            printf("\nPushed %d onto the stack. Stack Size: %d", num, stack->size);
+            printf("\nPushed %c onto the stack. Stack Size: %d", num, stack->size);
         }
     }
 }
 
-int pop(Stack* stack)
+char pop(Stack* stack) 
 {
-    int resultValue = -9999;
+    char resultValue = '\0'; 
     if (stack == NULL || stack->top == NULL)
     {
         printf("\nStack Underflow");
     }
-    
     else
     {
-        Node* temp = stack->top;
-        int num = temp->data;
+        StackNode* temp = stack->top; 
+        char num = temp->data; 
 
         stack->top = stack->top->next;
         stack->size--;
         
         free(temp);
-        printf("\nPopped %d from the stack. Stack Size: %d", num, stack->size);
+        resultValue = num;
+        printf("\nPopped %c from the stack. Stack Size: %d", num, stack->size);
     }
     return resultValue;
 }
 
-int top(Stack* stack)
+char top(Stack* stack) 
 {
-    int resultValue = -9999;
+    char resultValue = '\0'; 
     if (stack == NULL || stack->top == NULL)
     {
         printf("\nStack is NULL");
@@ -100,7 +102,7 @@ bool isEmptyStack(Stack* stack)
 bool isFullStack(Stack* stack)
 {
     bool result = false;
-    Node* testNode = (Node*)malloc(sizeof(Node));
+    StackNode* testNode = (StackNode*)malloc(sizeof(StackNode)); 
     if (stack == NULL || testNode == NULL)
     {
         result = true;
@@ -114,11 +116,11 @@ bool isFullStack(Stack* stack)
 
 void printStack(Stack* stack)
 {
-    Node* current = stack->top;
+    StackNode* current = stack->top; 
     int count = 1;
     while (current != NULL)
     {
-        printf("\n%d | %d", count++, current->data);
+        printf("\n%d | %c", count++, current->data);
         current = current->next;
     }
 }
@@ -126,14 +128,14 @@ void printStack(Stack* stack)
 void deleteStack(Stack** stack)
 {
     if (stack == NULL || *stack == NULL)
+    {
         printf("\nStack is NULL");
-    
+    }
     else
     {
         Stack* temp = *stack;
-
-        Node* current = temp->top;
-        Node* next = NULL;
+        StackNode* current = temp->top; 
+        StackNode* next = NULL;         
 
         while(current != NULL)
         {
@@ -144,27 +146,4 @@ void deleteStack(Stack** stack)
         free(temp);
         *stack = NULL;
     }
-}
-
-Stack* deleteElement(Stack* stack, int n)
-{
-    Stack* tempS1;
-    int x1;
-    int j;
-
-    tempS1 = createStack();
-    for (j = 1; j < n; j++)
-    {
-        x1 = pop(stack);
-        push(tempS1,x1);
-    }
-    x1 = pop(stack);
-
-    while(!isEmptyStack(tempS1))
-    {
-        x1 = pop(tempS1);
-        push(stack, x1);
-    }
-
-    return stack;
 }
