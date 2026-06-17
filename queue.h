@@ -1,10 +1,14 @@
+#ifndef QUEUE_H
+#define QUEUE_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include "token.h"
 
 typedef struct QueueNodeTag 
 {
-    char data; 
+    Token token; 
     struct QueueNodeTag* next; 
 } QueueNode;                   
 
@@ -31,7 +35,7 @@ Queue* createQueue()
     return queue;
 }
 
-void enqueue(Queue* queue, char num) 
+void enqueue(Queue* queue, Token t) 
 {
     if (queue == NULL)
     {
@@ -46,7 +50,7 @@ void enqueue(Queue* queue, char num)
         }
         else
         {
-            node->data = num;
+            node->token = t;
             node->next = NULL;
 
             if(queue->size == 0)
@@ -60,14 +64,15 @@ void enqueue(Queue* queue, char num)
                 queue->tail = node;
             }
             queue->size++;
-            printf("\nQueued %c onto the queue. Queue Size: %d", num, queue->size);
         }
     }
 }
 
-char dequeue(Queue* queue) 
+Token dequeue(Queue* queue) 
 {
-    char resultValue = '\0'; 
+    Token resultToken;
+    resultToken.type = ERROR_TOKEN;
+
     if (queue == NULL || queue->size == 0)
     {
         printf("\nQueue Underflow");
@@ -75,7 +80,7 @@ char dequeue(Queue* queue)
     else
     {
         QueueNode* temp = queue->head; 
-        resultValue = temp->data;
+        resultToken = temp->token;
 
         queue->head = queue->head->next;
         queue->size--;
@@ -86,37 +91,40 @@ char dequeue(Queue* queue)
         }
         
         free(temp);
-        printf("\nDequeued %c from the queue. Queue Size: %d", resultValue, queue->size);
     }
-    return resultValue;
+    return resultToken;
 }
 
-char Head(Queue* queue) 
+Token Head(Queue* queue) 
 {
-    char resultValue = '\0'; 
+    Token resultToken;
+    resultToken.type = ERROR_TOKEN;
+
     if (queue == NULL || queue->size == 0)
     {
         printf("\nQueue is NULL");
     }
     else
     {
-        resultValue = queue->head->data;
+        resultToken = queue->head->token;
     }
-    return resultValue;
+    return resultToken;
 }
 
-char Tail(Queue* queue) 
+Token Tail(Queue* queue) 
 {
-    char resultValue = '\0'; 
+    Token resultToken;
+    resultToken.type = ERROR_TOKEN;
+
     if (queue == NULL || queue->size == 0)
     {
         printf("\nQueue is NULL");
     }
     else
     {
-        resultValue = queue->tail->data; 
+        resultToken = queue->tail->token; 
     }
-    return resultValue;
+    return resultToken;
 }
 
 bool isEmptyQueue(Queue* queue)
@@ -167,20 +175,4 @@ void deleteQueue(Queue** queue)
     }
 }
 
-void printQueue(Queue* queue)
-{
-    if (queue == NULL)
-    {
-        printf("\nQueue does not exist.");
-    }
-    else
-    {
-        QueueNode* current = queue->head; 
-        int count = 1;
-        while (current != NULL)
-        {
-            printf("\n%d | %c", count++, current->data);
-            current = current->next;
-        }
-    }
-}
+#endif // QUEUE_H
