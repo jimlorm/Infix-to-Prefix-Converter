@@ -1,10 +1,14 @@
+#ifndef STACKS_H
+#define STACKS_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include "token.h"
 
 typedef struct StackNodeTag 
 {
-    char data; 
+    Token token; 
     struct StackNodeTag* next; 
 } StackNode;                   
 
@@ -29,7 +33,7 @@ Stack* createStack()
     return stack;
 }
 
-void push(Stack* stack, char num) 
+void push(Stack* stack, Token t) 
 {
     if (stack == NULL)
     {
@@ -44,18 +48,19 @@ void push(Stack* stack, char num)
         }
         else
         {
-            node->data = num;
+            node->token = t;
             node->next = stack->top;
             stack->top = node;
             stack->size++;
-            printf("\nPushed %c onto the stack. Stack Size: %d", num, stack->size);
         }
     }
 }
 
-char pop(Stack* stack) 
+Token pop(Stack* stack) 
 {
-    char resultValue = '\0'; 
+    Token resultToken;
+    resultToken.type = ERROR_TOKEN;
+
     if (stack == NULL || stack->top == NULL)
     {
         printf("\nStack Underflow");
@@ -63,30 +68,30 @@ char pop(Stack* stack)
     else
     {
         StackNode* temp = stack->top; 
-        char num = temp->data; 
+        resultToken = temp->token;
 
         stack->top = stack->top->next;
         stack->size--;
         
         free(temp);
-        resultValue = num;
-        printf("\nPopped %c from the stack. Stack Size: %d", num, stack->size);
     }
-    return resultValue;
+    return resultToken;
 }
 
-char top(Stack* stack) 
+Token top(Stack* stack) 
 {
-    char resultValue = '\0'; 
+    Token resultToken;
+    resultToken.type = ERROR_TOKEN;
+
     if (stack == NULL || stack->top == NULL)
     {
         printf("\nStack is NULL");
     }
     else
     {
-        resultValue = stack->top->data;
+        resultToken = stack->top->token;
     }
-    return resultValue;
+    return resultToken;
 }
 
 bool isEmptyStack(Stack* stack)
@@ -114,17 +119,6 @@ bool isFullStack(Stack* stack)
     return result;
 }
 
-void printStack(Stack* stack)
-{
-    StackNode* current = stack->top; 
-    int count = 1;
-    while (current != NULL)
-    {
-        printf("\n%d | %c", count++, current->data);
-        current = current->next;
-    }
-}
-
 void deleteStack(Stack** stack)
 {
     if (stack == NULL || *stack == NULL)
@@ -147,3 +141,5 @@ void deleteStack(Stack** stack)
         *stack = NULL;
     }
 }
+
+#endif // STACKS_H
