@@ -18,4 +18,13 @@ typedef struct {
     } data;
 } Token;
 
+// Error status
+typedef enum { 
+    SUCCESS, 
+    ERR_DIV_BY_ZERO, 
+    ERR_MISMATCH_PAREN, 
+    ERR_MALFORMED,
+    ERR_INVALID_CHAR
+} ErrorStatus;
+
 #endif // TOKEN_H
