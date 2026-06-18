@@ -4,6 +4,38 @@
 #include "stacks.h"
 #include "queue.h"
 
+// Function to safely clone/copy a queue
+Queue* copyQueue(Queue* src) {
+    if (src == NULL) 
+        return NULL;
+
+    Queue* dest = (Queue*)malloc(sizeof(Queue));
+    dest->head = NULL;
+    dest->tail = NULL;
+
+    QueueNode* current = src->head;
+
+    while (current != NULL) 
+    {
+        QueueNode* newNode = (QueueNode*)malloc(sizeof(QueueNode));
+        newNode->token = current->token;
+        newNode->next = NULL;
+
+        if (dest->head == NULL) 
+        {
+            dest->head = newNode;
+            dest->tail = newNode;
+        } else 
+        {
+            dest->tail->next = newNode;
+            dest->tail = newNode;
+        }
+        current = current->next; // Move to next original element
+    }
+    
+    return dest;
+}
+
 void tokenize(const char* expression, Queue* tokenQueue, ErrorStatus* status) 
 {
     int i = 0;
