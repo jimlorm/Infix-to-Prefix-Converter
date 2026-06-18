@@ -14,9 +14,11 @@
 
 void printTokenQueue(Queue* q) 
 {
+    QueueNode* current;
+
     if (q != NULL && q->size > 0) 
     {
-        QueueNode* current = q->head;
+        current = q->head;
         while (current != NULL) 
         {
             if (current->token.type == OPERAND) 
@@ -34,6 +36,8 @@ int main()
 {
     char inputBuffer[1000]; 
     int choice = 0;
+    ErrorStatus status = SUCCESS;
+    int finalResult = 0;
 
     do 
     {
@@ -58,8 +62,6 @@ int main()
                 {
                     Queue* infixQueue = createQueue();
                     Queue* prefixQueue = createQueue();
-                    ErrorStatus status = SUCCESS;
-                    int finalResult = 0;
 
                     printf(CYAN "\nEnter a mathematical expression:\n> " RESET);
                     
