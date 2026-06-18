@@ -1,36 +1,25 @@
+#ifndef TOKENIZER_H
+#define TOKENIZER_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
 #include "stacks.h"
 #include "queue.h"
 
-// Function to safely clone/copy a queue
-Queue* copyQueue(Queue* src) {
+Queue* copyQueue(Queue* src) 
+{
     if (src == NULL) 
         return NULL;
 
-    Queue* dest = (Queue*)malloc(sizeof(Queue));
-    dest->head = NULL;
-    dest->tail = NULL;
+    Queue* dest = createQueue(); 
 
     QueueNode* current = src->head;
 
     while (current != NULL) 
     {
-        QueueNode* newNode = (QueueNode*)malloc(sizeof(QueueNode));
-        newNode->token = current->token;
-        newNode->next = NULL;
-
-        if (dest->head == NULL) 
-        {
-            dest->head = newNode;
-            dest->tail = newNode;
-        } else 
-        {
-            dest->tail->next = newNode;
-            dest->tail = newNode;
-        }
-        current = current->next; // Move to next original element
+        enqueue(dest, current->token); 
+        current = current->next; 
     }
     
     return dest;
@@ -181,3 +170,5 @@ void isMalformedExpression(Queue* infix, ErrorStatus* status)
 
     deleteQueue(&infixCopy);
 }
+
+#endif // TOKENIZER_H
