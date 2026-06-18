@@ -28,13 +28,80 @@ void reverseQueue(Queue* q)
     deleteStack(&tempStack);
 }
 
-int precedenceLevel(char operator)
+int precedenceLevel(Token operator)
 {
+    int precedence = 0;
+    char op = operator.data.symbol;
 
+    if (op == '+' || op == '-')
+        precedence = 1;
+    else if (op == '*' || op == '/' || op == '%')
+        precedence = 2;
+    else if (op == '^')
+        precedence = 3;
+
+    return precedence;
 }
 
-void infixToPrefix(Queue* infixQueue, Queue* prefixQueue, ErrorStatus* status)
+void infixToPrefix(Queue* infixQueue, Queue* prefixQueue)
 {
+    Stack* operatorStack = createStack();
+    Token t;
+    bool done;
+
+    reverseQueue(infixQueue);
+
+    while (!isEmptyQueue(infixQueue))
+    {
+        t = dequeue(infixQueue);
+
+        if (t.type == OPERAND)
+            enqueue(prefixQueue, t);
+        else if (t.type == PARENTHESIS)
+        {
+            if (t.data.symbol == '(')
+                push(operatorStack, t);
+            else 
+            {
+                while (!isEmptyStack(operatorStack) && top(operatorStack).type != PARENTHESIS)
+                    enqueue(prefixQueue, pop(operatorStack));
+                
+                if (!isEmptyStack(operatorStack)) 
+                    pop(operatorStack);
+            }
+        }
+        else if (t.type == OPERATOR)
+        {
+            done = false;
+
+            while (!isEmptyStack(operatorStack) && top(operatorStack).type == OPERATOR && !done)
+            {
+                if (t.data.symbol != '^')
+                {
+                    if (precedenceLevel(top(operatorStack)) > precedenceLevel(t))
+                        enqueue(prefixQueue, pop(operatorStack));
+                    else
+                        done = true;
+                }
+                else 
+                {
+                    if (precedenceLevel(top(operatorStack)) >= precedenceLevel(t))
+                        enqueue(prefixQueue, pop(operatorStack));
+                    else
+                        done = true;
+                }
+            }
+
+            push(operatorStack, t);
+        }
+    }
+
+    while (!isEmptyStack(operatorStack))
+        enqueue(prefixQueue, pop(operatorStack));
+
+    reverseQueue(prefixQueue);
+
+    deleteStack(&operatorStack);
 }
 
 #endif // CONVERTER_H
