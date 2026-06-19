@@ -37,6 +37,7 @@ int main()
 {
     char inputBuffer[1000]; 
     int choice = 0;
+    int i;
 
     Queue* infixQueue;
     Queue* prefixQueue;
@@ -56,15 +57,23 @@ int main()
     do 
     {
 
-        printf(YELLOW "\n---------------------------------------------\n");
-        printf("   INFIX TO PREFIX CONVERTER AND EVALUATOR    \n");
-        printf("---------------------------------------------\n" RESET);
+        printf(YELLOW "\n-+H+-+H+-+H+-+H+-+H+-+H+-+H+-+H+-+H+-+H+-+H+-+H+-+H+-+H+-+H+-+H+\n");
+                                                                                   
+                                                                            
+        printf("  ___        __ _        _____       ____            __ _      \n");
+        printf(" |_ _|_ __  / _(_)_  __ |_   _|__   |  _ \\ _ __ ___ / _(_)_  __\n");
+        printf("  | || '_ \\| |_| \\ \\/ /   | |/ _ \\  | |_) | '__/ _ \\ |_| \\ \\/ / \n");
+        printf("  | || | | |  _| |>  <    | | (_) | |  __/| | |  __/  _| |>  <  \n");
+        printf(" |___|_| |_|_| |_/_/\\_\\   |_|\\___/  |_|   |_|  \\___|_| |_/_/\\_\\\n\n");
+                                                                           
+        printf("                    CONVERTER AND EVALUATOR    \n");
+        printf("-+H+-+H+-+H+-+H+-+H+-+H+-+H+-+H+-+H+-+H+-+H+-+H+-+H+-+H+-+H+-+H+\n" RESET);
         
-        printf(CYAN "[1] Convert and Evaluate an Expression\n");
-        printf("[2] Execution Time Analysis\n" );
-        printf("[3] Exit\n" RESET);
+        printf(CYAN " [1] Convert and Evaluate an Expression\n");
+        printf(" [2] Execution Time Analysis\n" );
+        printf(" [3] Exit\n" RESET);
         
-        printf(YELLOW "---------------------------------------------\n" RESET);
+        printf(YELLOW "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n" RESET);
         printf("Enter choice: ");
         
         if (fgets(inputBuffer, sizeof(inputBuffer), stdin) != NULL) 
@@ -79,7 +88,7 @@ int main()
                     prefixQueue = createQueue();
                     status = SUCCESS;
 
-                    printf(CYAN "\nEnter a mathematical expression:\n> " RESET);
+                    printf(CYAN "\nEnter a mathematical expression:\n-> " RESET);
                     
                     if (fgets(inputBuffer, sizeof(inputBuffer), stdin) != NULL) 
                     {
@@ -109,7 +118,7 @@ int main()
                             finalResult = evaluatePrefix(prefixQueue, &status);
 
                         // Final Reporting
-                        printf(GREEN "\n---------------------------------------------\n" RESET);
+                        printf(GREEN "\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n" RESET);
                         if (status == SUCCESS) 
                         {
                             printf(GREEN "FINAL ANSWER: %d\n" RESET, finalResult);
@@ -126,7 +135,7 @@ int main()
                                 default: printf("Unknown error.\n" RESET); break;
                             }
                         }
-                        printf(GREEN "---------------------------------------------\n" RESET);
+                        printf(GREEN "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n" RESET);
                     }
 
                     deleteQueue(&infixQueue);
@@ -134,12 +143,12 @@ int main()
 
                     break;
                 }
-                case 2:
-                    printf(YELLOW "\n------- EXECUTION TIME ANALYSIS -------\n" RESET);
+                case 2:            
+                    printf(YELLOW "\n=-=-=-=-=-=-=-=-=-=-EXECUTION TIME ANALYSIS=-=-=-=-=-=-=-=-=-=-\n" RESET);
 
                     clock_t startTime = clock();
 
-                    for (int i = 0; i < iterations; i++) 
+                    for (i = 0; i < iterations; i++) 
                     {
                         testInfix = createQueue();
                         testPrefix = createQueue();
