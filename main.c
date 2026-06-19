@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #include "tokenizer.h"
 #include "conversion.h"
@@ -36,8 +37,21 @@ int main()
 {
     char inputBuffer[1000]; 
     int choice = 0;
-    ErrorStatus status = SUCCESS;
+
+    Queue* infixQueue;
+    Queue* prefixQueue;
+    ErrorStatus status;
     int finalResult = 0;
+
+    Queue* testInfix;
+    Queue* testPrefix;
+    ErrorStatus testStatus;
+    int testResult = 0;
+    int iterations = 10000;
+
+    // INPUT THE EXPRESSION TO BE TESTED FOR EXECUTION TIME
+    char* testExpression = "((10 + 20) * (30 + 40)) / 50 + 60 * (70 - 80) + 90 / (10 + 20) * (30 + 40) / 50 + 60 * (70 - 80) + 90 / (10 + 20) * (30 + 40) / 50" ;
+
 
     do 
     {
@@ -46,8 +60,9 @@ int main()
         printf("   INFIX TO PREFIX CONVERTER AND EVALUATOR    \n");
         printf("---------------------------------------------\n" RESET);
         
-        printf(CYAN "[1] Evaluate a Manual Expression\n");
-        printf("[2] Exit\n" RESET);
+        printf(CYAN "[1] Convert and Evaluate an Expression\n");
+        printf("[2] Execution Time Analysis\n" );
+        printf("[3] Exit\n" RESET);
         
         printf(YELLOW "---------------------------------------------\n" RESET);
         printf("Enter choice: ");
@@ -60,8 +75,9 @@ int main()
             {
                 case 1:
                 {
-                    Queue* infixQueue = createQueue();
-                    Queue* prefixQueue = createQueue();
+                    infixQueue = createQueue();
+                    prefixQueue = createQueue();
+                    status = SUCCESS;
 
                     printf(CYAN "\nEnter a mathematical expression:\n> " RESET);
                     
@@ -115,17 +131,61 @@ int main()
 
                     deleteQueue(&infixQueue);
                     deleteQueue(&prefixQueue);
+
                     break;
                 }
                 case 2:
+                    printf(YELLOW "\n------- EXECUTION TIME ANALYSIS -------\n" RESET);
+
+                    clock_t startTime = clock();
+
+                    for (int i = 0; i < iterations; i++) 
+                    {
+                        testInfix = createQueue();
+                        testPrefix = createQueue();
+                        testStatus = SUCCESS;
+
+                        tokenize(testExpression, testInfix, &testStatus);
+                        
+                        if (testStatus == SUCCESS) 
+                            hasMismatchedParenthesis(testInfix, &testStatus);
+                        if (testStatus == SUCCESS) 
+                            isMalformedExpression(testInfix, &testStatus);
+                        if (testStatus == SUCCESS) 
+                            infixToPrefix(testInfix, testPrefix);
+                        if (testStatus == SUCCESS) 
+                            testResult = evaluatePrefix(testPrefix, &testStatus);
+
+                        deleteQueue(&testInfix);
+                        deleteQueue(&testPrefix);
+                    }
+
+                    clock_t endTime = clock();
+
+                    double timeElapsed = ((double)(endTime - startTime) / CLOCKS_PER_SEC) / iterations * 1000;
+
+                    if (testStatus == SUCCESS) 
+                    {
+                        printf(GREEN "[SUCCESS] Expression was evaluated successfully!\n" RESET);
+                        printf("Calculated Answer: %d\n", testResult);
+                    }
+                    else 
+                    {
+                        printf(RED "Test failed with error code: %d\n" RESET, testStatus);
+                    }
+
+                    printf(YELLOW "Time Elapsed: %lf milliseconds\n" RESET, timeElapsed);
+                    break;
+                case 3:
                     printf(CYAN "\nExiting program. Goodbye!\n" RESET);
                     break;
                 default:
-                    printf(RED "\nInvalid choice. Please enter 1 or 2.\n" RESET);
+                    printf(RED "\nInvalid choice. Please enter 1, 2, or 3.\n" RESET);
                     break;
             }
         }
-    } while (choice != 2); 
-
+    } 
+    while (choice != 3); 
+    
     return 0; 
 }
