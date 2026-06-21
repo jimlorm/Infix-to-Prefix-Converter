@@ -48,7 +48,7 @@ void generateTestData(char* buffer, int targetTokens, int cat)
         int parenPairs = (targetTokens - 3) / 2;
         int i = 0;
         
-        while (i < parenPairs) 
+        while (i < parenPairs)
         {
             appendString(buffer, "(", &currentLength);
             i++;
@@ -88,18 +88,15 @@ void generateTestData(char* buffer, int targetTokens, int cat)
 
 int main() 
 {
-    int tokenSizes[] = {5, 25, 125, 500, 1000, 2500, 5000, 10000};
-    int numSizes = 8; 
-    int cat, s;
-    
-    char* expressionBuffer = (char*)malloc(300000 * sizeof(char));
-    
-    printf("TokenCount\tCategory1(ms)\tCategory2(ms)\tCategory3(ms)\tCategory4(ms)\n");
+    int N;
+    int cat;
 
-    s = 0;
-    while (s < numSizes) 
+    char* expressionBuffer = (char*)malloc(50000 * sizeof(char));
+
+    printf("TokenCount\tCategory1(ms)\tCategory2(ms)\tCategory3(ms)\tCategory4(ms)\tTheoreticalBaseline\n");
+
+    for (N = 5; N <= 100; N += 5) 
     {
-        int N = tokenSizes[s];
         double results[5] = {0.0, 0.0, 0.0, 0.0, 0.0};
 
         cat = 1;
@@ -107,15 +104,7 @@ int main()
         {
             generateTestData(expressionBuffer, N, cat);
             
-            /* High iterations for tiny tokens (like 5, 25) so the clock can measure them precisely */
-            int iterations;
-            if (N <= 25)
-                iterations = 10000;
-            else if (N <= 1000)
-                iterations = 500;
-            else
-                iterations = 50; 
-                
+            int iterations = 15000;
             int iter = 0;
             
             clock_t startTime = clock();
@@ -150,8 +139,11 @@ int main()
             cat++;
         }
 
-        printf("%d\t\t%.4lf\t\t%.4lf\t\t%.4lf\t\t%.4lf\n", N, results[1], results[2], results[3], results[4]);
-        s++;
+        double linearCoefficient = 0.00085;
+        double theoreticalValue = linearCoefficient * N;
+
+        printf("%d\t\t%.4lf\t\t%.4lf\t\t%.4lf\t\t%.4lf\t\t%.4lf\n", 
+               N, results[1], results[2], results[3], results[4], theoreticalValue);
     }
 
     free(expressionBuffer);
