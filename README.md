@@ -1,5 +1,4 @@
-======================================================================
-              INFIX TO PREFIX CONVERTER AND EVALUATOR
+INFIX TO PREFIX CONVERTER AND EVALUATOR
 ======================================================================
 
 A C application that tokenizes mathematical infix expressions, 
