@@ -56,7 +56,7 @@ int main()
     Queue* testPrefix;
     ErrorStatus testStatus;
     int testResult = 0;
-    int iterations = 10000;
+    int iterations = 15000;
 
     // INPUT THE EXPRESSION TO BE TESTED FOR EXECUTION TIME
     char* testExpression = "((10 + 20) * (30 + 40)) / 50 + 60 * (70 - 80) + 90 / (10 + 20) * (30 + 40) / 50 + 60 * (70 - 80) + 90 / (10 + 20) * (30 + 40) / 50" ;
