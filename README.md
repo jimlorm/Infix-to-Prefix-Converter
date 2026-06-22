@@ -54,4 +54,3 @@ When you run the application, you can choose from these options:
 * queue.h      - Linked-list implementation for queue tracking.
 * stacks.h     - Linked-list implementation for stack tracking.
 * token.h      - Token configurations and ErrorStatus statuses.
-======================================================================
