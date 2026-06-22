@@ -18,6 +18,10 @@ typedef struct StackTag
     int size;
 } Stack;
 
+/*
+    Purpose: initializes a new, empty stack in memory
+    Returns: a pointer to the newly created stack
+*/
 Stack* createStack()
 {
     Stack* stack = (Stack*)malloc(sizeof(Stack));
@@ -33,6 +37,11 @@ Stack* createStack()
     return stack;
 }
 
+/*
+    Purpose: inserts a new token at the top of the stack
+    @param : stack is the pointer to the stack where the token will be pushed
+    @param : t is the token to be inserted
+*/
 void push(Stack* stack, Token t) 
 {
     if (stack == NULL)
@@ -56,6 +65,11 @@ void push(Stack* stack, Token t)
     }
 }
 
+/*
+    Purpose: removes and returns the token at the top of the stack
+    Returns: the token that was removed, or an ERROR_TOKEN if the stack is empty
+    @param : stack is the pointer to the stack to pop from
+*/
 Token pop(Stack* stack) 
 {
     Token resultToken;
@@ -78,6 +92,11 @@ Token pop(Stack* stack)
     return resultToken;
 }
 
+/*
+    Purpose: retrieves the token at the top of the stack without removing it
+    Returns: the token at the top, or an ERROR_TOKEN if the stack is empty
+    @param : stack is the pointer to the stack being checked
+*/
 Token top(Stack* stack) 
 {
     Token resultToken;
@@ -94,6 +113,11 @@ Token top(Stack* stack)
     return resultToken;
 }
 
+/*
+    Purpose: checks if the given stack contains no elements
+    Returns: true if the stack is empty or NULL, false otherwise
+    @param : stack is the pointer to the stack being checked
+*/
 bool isEmptyStack(Stack* stack)
 {
     bool result = false;
@@ -104,6 +128,11 @@ bool isEmptyStack(Stack* stack)
     return result;
 }
 
+/*
+    Purpose: checks if the system has run out of memory to allocate a new stack node
+    Returns: true if memory allocation fails, false if memory is available
+    @param : stack is the pointer to the stack being checked
+*/
 bool isFullStack(Stack* stack)
 {
     bool result = false;
@@ -119,6 +148,10 @@ bool isFullStack(Stack* stack)
     return result;
 }
 
+/*
+    Purpose: frees all memory associated with the stack and its nodes
+    @param : stack is a double pointer to the stack so it can be safely set to NULL after deletion
+*/
 void deleteStack(Stack** stack)
 {
     if (stack == NULL || *stack == NULL)

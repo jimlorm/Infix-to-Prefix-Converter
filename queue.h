@@ -19,6 +19,10 @@ typedef struct QueueTag
     int size;
 } Queue;
 
+/*
+    Purpose: initializes a new, empty queue in memory
+    Returns: a pointer to the newly created queue
+*/
 Queue* createQueue()
 {
     Queue* queue = (Queue*)malloc(sizeof(Queue));
@@ -35,6 +39,11 @@ Queue* createQueue()
     return queue;
 }
 
+/*
+    Purpose: inserts a new token at the tail of the queue
+    @param : queue is the pointer to the queue where the token will be added
+    @param : t is the token to be inserted
+*/
 void enqueue(Queue* queue, Token t) 
 {
     if (queue == NULL)
@@ -68,6 +77,11 @@ void enqueue(Queue* queue, Token t)
     }
 }
 
+/*
+    Purpose: removes and returns the token at the head of the queue
+    Returns: the token that was removed, or an ERROR_TOKEN if the queue is empty
+    @param : queue is the pointer to the queue to dequeue from
+*/
 Token dequeue(Queue* queue) 
 {
     Token resultToken;
@@ -95,6 +109,11 @@ Token dequeue(Queue* queue)
     return resultToken;
 }
 
+/*
+    Purpose: retrieves the token at the head of the queue without removing it
+    Returns: the token at the head, or an ERROR_TOKEN if the queue is empty
+    @param : queue is the pointer to the queue being checked
+*/
 Token Head(Queue* queue) 
 {
     Token resultToken;
@@ -111,6 +130,11 @@ Token Head(Queue* queue)
     return resultToken;
 }
 
+/*
+    Purpose: retrieves the token at the tail of the queue without removing it
+    Returns: the token at the tail, or an ERROR_TOKEN if the queue is empty
+    @param : queue is the pointer to the queue being checked
+*/
 Token Tail(Queue* queue) 
 {
     Token resultToken;
@@ -127,6 +151,11 @@ Token Tail(Queue* queue)
     return resultToken;
 }
 
+/*
+    Purpose: checks if the given queue contains no elements
+    Returns: true if the queue is empty or NULL, false otherwise
+    @param : queue is the pointer to the queue being checked
+*/
 bool isEmptyQueue(Queue* queue)
 {
     bool emptyStatus = false;
@@ -137,6 +166,11 @@ bool isEmptyQueue(Queue* queue)
     return emptyStatus; 
 }
 
+/*
+    Purpose: checks if the system has run out of memory to allocate a new queue node
+    Returns: true if memory allocation fails, false if memory is available
+    @param : queue is the pointer to the queue being checked
+*/
 bool isFullQueue(Queue* queue)
 {
     bool fullStatus = false;
@@ -152,6 +186,10 @@ bool isFullQueue(Queue* queue)
     return fullStatus;
 }
 
+/*
+    Purpose: frees all memory associated with the queue and its nodes
+    @param : queue is a double pointer to the queue so it can be safely set to NULL after deletion
+*/
 void deleteQueue(Queue** queue)
 {
     if (queue == NULL || *queue == NULL)

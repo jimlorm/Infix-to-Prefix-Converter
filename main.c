@@ -7,12 +7,18 @@
 #include "conversion.h"
 #include "evaluation.h"
 
+// ANSI Escape Sequences
 #define RESET   "\033[0m"
 #define RED     "\033[1;31m"
 #define GREEN   "\033[1;32m"
 #define YELLOW  "\033[1;33m"
 #define CYAN    "\033[1;36m"
 
+/*
+    Purpose: prints the contents of a queue sequentially from head to tail 
+             (useful for displaying intermediate prefix or infix expressions)
+    @param : q is the pointer to the queue to be printed
+*/
 void printTokenQueue(Queue* q) 
 {
     QueueNode* current;
@@ -39,11 +45,13 @@ int main()
     int choice = 0;
     int i;
 
+    // For manual conversion and evaluation
     Queue* infixQueue;
     Queue* prefixQueue;
     ErrorStatus status;
     int finalResult = 0;
 
+    // For empirical time analysis
     Queue* testInfix;
     Queue* testPrefix;
     ErrorStatus testStatus;
